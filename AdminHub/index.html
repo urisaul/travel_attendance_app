@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <mata charset="utf*8" />
+    <mata name="viewport" content="width=device-with, initial-scale.0" />
+    <!--my CSS-->
+    <link rel="stylsheet" href="style.css" />
+
+    <title>adminin_Hub</title>
+  </head>
+  <boby>
+    <h3>Drivers, <button onclick="get_Drivers()">click here</button></h3>
+    <section id="drivers">
+      <!-- drivers go here -->
+    </section>
+    <h3>
+      individuals, <button onclick="get_individuals()">click here</button>
+    </h3>
+    <section id="individuals">
+      <!-- drivers go here -->
+    </section>
+
+    <div>
+      <h4>add driver</h4>
+      <input id="driver_firstname" type="text" placeholder="firstname" />
+      <input id="driver_lastname" type="text" placeholder="lastname" />
+      <input id="driver_email" type="email" placeholder="email" />
+      <input id="driver_password" type="password" placeholder="password" />
+      <button onclick="add_driver()">submit</button>
+    </div>
+    <script>
+      function get_Drivers() {
+        // get drivers
+        fetch("http://localhost:3000/drivers")
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            let elem = document.getElementById("drivers");
+            elem.innerHTML = "";
+            data.map((i) => {
+              elem.innerHTML += `<div style='padding: 25px; '>${i.lastname}, ${i.firstname} <a href="/dirver.html?id=${i.id}">click on</a></div>`;
+            });
+          });
+      }
+      function get_individuals() {
+        // get individuals
+        fetch("http://localhost:3000/individuals")
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            let elem = document.getElementById("individuals");
+            elem.innerHTML = "";
+            data.map((i) => {
+              elem.innerHTML += `<div style='padding: 25px; '>${i.lastname}, ${i.firstname} <a href="/individual.html?id=${i.id}">click on</a></div>`;
+            });
+          });
+      }
+
+      function add_driver() {
+        fetch("http://localhost:3000/drivers/add", {
+          method: "post",
+          body: JSON.stringify({ 
+            firstname: document.getElementById("driver_firstname").value, 
+            lastname:document.getElementById("driver_lastname").value,
+            email:document.getElementById("driver_email").value ,
+            password:document.getElementById("driver_password").value 
+        }),
+          "Content-Type": "application/json"
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+          });
+      }
+    </script>
+  </boby>
+</html>
